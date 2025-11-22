@@ -1,0 +1,167 @@
+/* =========================================
+   1. 基礎設定 (模擬原本的環境)
+   ========================================= */
+:root {
+    --bg-color: #050714;
+    --neon-blue: #00f2ff;
+    --text-main: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Noto Sans TC', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.demo-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* =========================================
+   2. ★ 橫幅廣告組件樣式 (優化版)
+   ========================================= */
+
+/* 外層容器 */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    /* ✅ 新增這一行：設定成跟你的圖片一模一樣的比例 */
+    aspect-ratio: 3584 / 1184;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    background: #000;
+}
+
+/* 滑動軌道 */
+.carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* 單張幻燈片 */
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 確保圖片填滿 */
+}
+
+/* --- 優化後的幻燈片內容文字區塊 --- */
+.slide-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* 改為底部一條半透明的橫條，減少遮擋 */
+    background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0));
+    padding: 30px 20px 20px 20px; /* 上方多留點空間給漸層 */
+    color: var(--text-main);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    /* 讓滑鼠事件穿透，避免擋住點擊圖片的需求 */
+    pointer-events: none;
+}
+
+.slide-content h2 {
+    color: var(--neon-blue);
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+    display: inline-block; /* 讓標題和描述可以並排或緊湊排列 */
+    margin-right: 15px;
+}
+
+.slide-content p {
+    color: #eee;
+    font-size: 1rem;
+    display: inline-block;
+}
+
+/* 左右切換按鈕 */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px; height: 45px;
+    background: rgba(0, 0, 0, 0.3); /* 稍微透明一點 */
+    color: var(--neon-blue);
+    border: 1px solid var(--neon-blue);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.3s;
+    font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.carousel-btn:hover {
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-blue);
+}
+
+.prev { left: 20px; }
+.next { right: 60px; } /* 調整位置 */
+
+/* 右側垂直導航圓點 */
+.carousel-indicators {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+    /* 增加一個半透明背景讓圓點更清楚 */
+    background: rgba(0,0,0,0.6);
+    padding: 10px 6px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.indicator {
+    width: 10px; height: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid transparent;
+}
+
+.indicator.active {
+    background: var(--neon-blue);
+    box-shadow: 0 0 10px var(--neon-blue);
+    transform: scale(1.3);
+}
+
+/* 手機版 RWD */
+@media (max-width: 768px) {
+    .carousel-container { aspect-ratio: 3584 / 1184; }
+    .slide-content h2 { font-size: 1.2rem; display: block; margin-bottom: 5px; }
+    .slide-content p { font-size: 0.9rem; display: block; }
+    .carousel-btn { width: 35px; height: 35px; font-size: 1rem; }
+    .next { right: 10px; } .prev { left: 10px; }
+    .carousel-indicators { right: 10px; padding: 5px 2px; gap: 8px; }
+    .indicator { width: 8px; height: 8px; }
+}
